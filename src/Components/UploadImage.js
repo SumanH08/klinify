@@ -18,7 +18,6 @@ class UploadImage extends React.Component {
     return (
       <div>
         <Input
-          required
           type="file"
           id="file"
           accept="image"

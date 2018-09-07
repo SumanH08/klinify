@@ -3,6 +3,7 @@ import UploadImage from "./UploadImage.js";
 import CropImage from "./CropImage.js";
 import DisplayCroppedImg from "./DisplayCroppedImg.js";
 import PrintPreview from "./PrintPreview.js";
+import PrintPage from "./PrintPage.js";
 
 class CropWrapper extends React.Component {
   constructor(props) {
@@ -61,8 +62,10 @@ class CropWrapper extends React.Component {
     return Promise.resolve("http://lorempixel.com/800/100/cats/");
   };
 
+  openPreview = () => {};
+
   render() {
-    let cropComponent;
+    let cropComponent, printComp;
     if (this.state.isUploaded) {
       cropComponent = (
         <div>
@@ -79,6 +82,7 @@ class CropWrapper extends React.Component {
           />
           <PrintPreview
             isClicked={this.state.isClicked}
+            openPreview={this.openPreview}
             ImgForPreview={this.state.ImgForPreview}
           />
         </div>
@@ -86,6 +90,7 @@ class CropWrapper extends React.Component {
     }
     return (
       <div>
+        <p>Upload an image of size less than 1 MB to crop it</p>
         <UploadImage
           fileOnUpload={this.fileOnUpload}
           isUploaded={this.state.isUploaded}
