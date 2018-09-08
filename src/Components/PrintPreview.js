@@ -1,20 +1,16 @@
 import React from "react";
+import { Button } from "reactstrap";
+import { Link } from "react-router-dom";
 
 class PrintPreview extends React.Component {
-  openPreview = () => {
-    this.props.openPreview();
-  };
-
   render() {
-    let previewImg;
-    if (this.props.isClicked) {
-      previewImg = (
-        <a href={`/print?img=${this.props.ImgForPreview}`} target="_blank">
-          Preview image here
-        </a>
-      );
-    }
-    return <div>{previewImg}</div>;
+    return (
+      <Link to={`/print?img=${this.props.ImgForPreview}`} target="_blank">
+        <Button color="primary" disabled={!this.props.isSaveClicked}>
+          Print and preview image
+        </Button>
+      </Link>
+    );
   }
 }
 

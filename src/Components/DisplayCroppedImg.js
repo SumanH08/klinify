@@ -5,10 +5,14 @@ class displayCroppedImg extends React.Component {
     let displayCroppedImg;
     if (this.props.isClicked) {
       displayCroppedImg = (
-        <img src={this.props.croppedImgUrl} alt="cropped-img" />
+        <img
+          style={{ maxWidth: "800px", maxHeight: "400px" }}
+          src={this.props.croppedImgUrl}
+          alt="cropped-img"
+        />
       );
     }
-    return <div>{displayCroppedImg}</div>;
+    return <div className="crop-wrapper">{displayCroppedImg}</div>;
   }
 }
 

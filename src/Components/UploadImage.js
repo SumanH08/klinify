@@ -13,11 +13,16 @@ class UploadImage extends React.Component {
   render() {
     let displayClearBtn;
     if (this.props.isUploaded) {
-      displayClearBtn = <Button onClick={this.clearInput}>Clear Input</Button>;
+      displayClearBtn = (
+        <Button color="warning" onClick={this.clearInput}>
+          Clear Input
+        </Button>
+      );
     }
     return (
       <div>
         <div style={{ display: "inline-block" }}>
+          Step 1. Upload Image
           <Input
             type="file"
             id="file"

@@ -2,6 +2,7 @@ import React from "react";
 import UploadImage from "./UploadImage.js";
 import CropImage from "./CropImage.js";
 import DisplayCroppedImg from "./DisplayCroppedImg.js";
+import SaveImage from "./SaveImage.js";
 import PrintPreview from "./PrintPreview.js";
 import { Container } from "reactstrap";
 
@@ -13,6 +14,7 @@ class CropWrapper extends React.Component {
       isUploaded: false,
       croppedImgUrl: "",
       isClicked: false,
+      isSaveClicked: false,
       ImgForPreview: ""
     };
   }
@@ -32,18 +34,24 @@ class CropWrapper extends React.Component {
     );
   };
 
-  onChange = values => {
-    // console.log("Values inside parent here", values);
-  };
-
   handleClick = cropFunc => {
     this.setState({ isClicked: true });
     this.setState({ croppedImgUrl: cropFunc });
-    this.sendCroppedImgToAPI(cropFunc);
+  };
+
+  saveImageOnClick = () => {
+    this.setState({ isSaveClicked: true });
+    console.log("Saving image now");
+    // this.setState({ croppedImgUrl: cropFunc });
+    this.sendCroppedImgToAPI(this.state.croppedImgUrl);
   };
 
   clearInput = () => {
-    this.setState({ isUploaded: false, isClicked: false });
+    this.setState({
+      isUploaded: false,
+      isClicked: false,
+      isSaveClicked: false
+    });
   };
 
   sendCroppedImgToAPI = croppedImgUrl => {
@@ -77,10 +85,6 @@ class CropWrapper extends React.Component {
             isClicked={this.state.isClicked}
             croppedImgUrl={this.state.croppedImgUrl}
           />
-          <PrintPreview
-            isClicked={this.state.isClicked}
-            ImgForPreview={this.state.ImgForPreview}
-          />
         </div>
       );
     }
@@ -94,6 +98,20 @@ class CropWrapper extends React.Component {
             clearInput={this.clearInput}
           />
           {cropComponent}
+          <div style={{ marginBottom: "24px" }}>
+            <div style={{ display: "inline-block" }}>
+              <SaveImage
+                isSaveClicked={this.state.isSaveClicked}
+                saveImageOnClick={this.saveImageOnClick}
+              />
+            </div>
+            <div style={{ display: "inline-block", float: "right" }}>
+              <PrintPreview
+                isSaveClicked={this.state.isSaveClicked}
+                ImgForPreview={this.state.ImgForPreview}
+              />
+            </div>
+          </div>
         </Container>
       </div>
     );
