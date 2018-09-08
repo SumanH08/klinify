@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "reactstrap";
 
 class PrintPreview extends React.Component {
   openPreview = () => {

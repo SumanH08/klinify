@@ -3,7 +3,7 @@ import UploadImage from "./UploadImage.js";
 import CropImage from "./CropImage.js";
 import DisplayCroppedImg from "./DisplayCroppedImg.js";
 import PrintPreview from "./PrintPreview.js";
-import PrintPage from "./PrintPage.js";
+import { Container } from "reactstrap";
 
 class CropWrapper extends React.Component {
   constructor(props) {
@@ -33,7 +33,7 @@ class CropWrapper extends React.Component {
   };
 
   onChange = values => {
-    console.log("Values inside parent here", values);
+    // console.log("Values inside parent here", values);
   };
 
   handleClick = cropFunc => {
@@ -47,7 +47,6 @@ class CropWrapper extends React.Component {
   };
 
   sendCroppedImgToAPI = croppedImgUrl => {
-    console.log("Sending image to api", croppedImgUrl);
     this.saveImage(croppedImgUrl)
       .then(res => {
         console.log("preview image here", res);
@@ -62,10 +61,8 @@ class CropWrapper extends React.Component {
     return Promise.resolve("http://lorempixel.com/800/100/cats/");
   };
 
-  openPreview = () => {};
-
   render() {
-    let cropComponent, printComp;
+    let cropComponent;
     if (this.state.isUploaded) {
       cropComponent = (
         <div>
@@ -82,7 +79,6 @@ class CropWrapper extends React.Component {
           />
           <PrintPreview
             isClicked={this.state.isClicked}
-            openPreview={this.openPreview}
             ImgForPreview={this.state.ImgForPreview}
           />
         </div>
@@ -90,13 +86,15 @@ class CropWrapper extends React.Component {
     }
     return (
       <div>
-        <p>Upload an image of size less than 1 MB to crop it</p>
-        <UploadImage
-          fileOnUpload={this.fileOnUpload}
-          isUploaded={this.state.isUploaded}
-          clearInput={this.clearInput}
-        />
-        {cropComponent}
+        <Container>
+          <h1>Welcome to image cropper</h1>
+          <UploadImage
+            fileOnUpload={this.fileOnUpload}
+            isUploaded={this.state.isUploaded}
+            clearInput={this.clearInput}
+          />
+          {cropComponent}
+        </Container>
       </div>
     );
   }

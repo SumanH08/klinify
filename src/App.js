@@ -7,7 +7,6 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1>Welcome to Klinify image cropper</h1>
         <BrowserRouter>
           <div>
             <Route exact path="/" component={CropWrapper} />

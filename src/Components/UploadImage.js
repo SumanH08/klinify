@@ -17,13 +17,17 @@ class UploadImage extends React.Component {
     }
     return (
       <div>
-        <Input
-          type="file"
-          id="file"
-          accept="image"
-          onChange={this.fileOnUpload}
-        />
-        {displayClearBtn}
+        <div style={{ display: "inline-block" }}>
+          <Input
+            type="file"
+            id="file"
+            accept="image"
+            onChange={this.fileOnUpload}
+          />
+        </div>
+        <div style={{ display: "inline-block", float: "right" }}>
+          {displayClearBtn}
+        </div>
       </div>
     );
   }
