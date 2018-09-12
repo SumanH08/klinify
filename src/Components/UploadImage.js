@@ -3,7 +3,12 @@ import { Input, Button } from "reactstrap";
 
 class UploadImage extends React.Component {
   fileOnUpload = event => {
-    this.props.fileOnUpload(event);
+    console.log("file here", event.target.files[0]);
+    if (event.target.files[0] == undefined) {
+      return;
+    } else {
+      this.props.fileOnUpload(event);
+    }
   };
 
   clearInput = () => {

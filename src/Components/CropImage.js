@@ -58,21 +58,23 @@ class CropImage extends React.Component {
     console.log(this.state.cWidth, this.state.cHeight);
     return (
       <div>
-        <div className="image-wrapper">
-          <Cropper
-            src={this.props.uploadedImage}
-            width={this.state.cWidth}
-            height={this.state.cHeight}
-            originX={this.state.cX}
-            originY={this.state.cY}
-            fixedRatio={true}
-            ref={ref => {
-              this.cropper = ref;
-            }}
-            onChange={this.onChange}
-          />
+        <div style={{ height: "1000px" }}>
+          <div className="image-wrapper">
+            <Cropper
+              src={this.props.uploadedImage}
+              width={this.state.cWidth}
+              height={this.state.cHeight}
+              originX={this.state.cX}
+              originY={this.state.cY}
+              fixedRatio={true}
+              ref={ref => {
+                this.cropper = ref;
+              }}
+              onChange={this.onChange}
+            />
+          </div>
         </div>
-        <div style={{ display: "inline-block" }}>
+        <div>
           Step 2.
           <Button
             color="primary"
