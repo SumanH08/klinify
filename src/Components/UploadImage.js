@@ -34,6 +34,7 @@ class UploadImage extends React.Component {
       );
     }
     return (
+      //Probably should be using a table instead of divs here
       <div>
         <div style={{ display: "inline-block" }}>
           Upload Image
