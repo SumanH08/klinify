@@ -9,8 +9,7 @@ class CropImage extends React.Component {
         x: 20,
         y: 10,
         width: 30,
-        height: 10,
-        aspect: 8 / 1
+        height: 10
       },
       pixelCrop: {
         x: 20,
@@ -43,13 +42,13 @@ class CropImage extends React.Component {
         pixelCrop.height,
         0,
         0,
-        800,
-        100
+        pixelCrop.width,
+        pixelCrop.height
       );
+      document.getElementById("preview").innerHTML = "";
+      document.getElementById("preview").appendChild(canvas);
     };
-
-    document.getElementById("preview").innerHTML = "";
-    document.getElementById("preview").appendChild(canvas);
+    img.src = URL.createObjectURL(this.props.uploadedImage);
   };
 
   onComplete = crop => {
@@ -59,7 +58,8 @@ class CropImage extends React.Component {
       maxHeight: 100 * 100 / this.props.imgHeight
     });
     const completedCanvas = document.getElementById("preview").innerHTML;
-    this.props.updateCroppedImg(completedCanvas);
+    this.getCroppedImg(this.props.uploadedImage, this.state.pixelCrop, "hello");
+    // this.props.updateCroppedImg(completedCanvas);
   };
 
   render() {

@@ -36,7 +36,7 @@ class UploadImage extends React.Component {
     return (
       <div>
         <div style={{ display: "inline-block" }}>
-          Step 1. Upload Image
+          Upload Image
           <Input
             type="file"
             id="file"
