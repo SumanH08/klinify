@@ -1,89 +1,82 @@
 import React from "react";
-import { Cropper } from "react-image-cropper";
-import { Button } from "reactstrap";
+import ReactCrop from "react-image-crop";
 
 class CropImage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fixedRatio: 0,
-      cWidth: 800,
-      cHeight: 100,
-      cX: 0,
-      cY: 0
+      crop: {
+        x: 20,
+        y: 10,
+        width: 30,
+        height: 10,
+        aspect: 8 / 1
+      },
+      pixelCrop: {
+        x: 20,
+        y: 10,
+        width: 30,
+        height: 10
+      },
+      maxWidth: 0,
+      maxHeight: 0
     };
   }
 
-  handleClick = () => {
-    this.values = this.cropper.values();
-    this.props.handleClick(this.cropper.crop());
+  onChange = (crop, pixelCrop) => {
+    this.setState({ crop: crop, pixelCrop: pixelCrop });
+    this.getCroppedImg(this.props.uploadedImage, this.state.pixelCrop, "hello");
   };
 
-  onChange = values => {
-    this.values = this.cropper.values();
-    // this.props.onChange(values);
-    if (this.values.display.width > 800) {
-      this.setState({
-        cWidth: 800
-      });
-    } else {
-      this.setState({
-        cWidth: this.values.display.width
-      });
-    }
+  getCroppedImg = (image, pixelCrop, fileName) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = pixelCrop.width;
+    canvas.height = pixelCrop.height;
+    const ctx = canvas.getContext("2d");
+    var img = new Image();
+    img.onload = function() {
+      ctx.drawImage(
+        img,
+        pixelCrop.x,
+        pixelCrop.y,
+        pixelCrop.width,
+        pixelCrop.height,
+        0,
+        0,
+        800,
+        100
+      );
+    };
 
-    if (this.values.display.height > 100) {
-      console.log("more than 100");
-      this.setState({
-        cHeight: 100
-      });
-      console.log("More again");
-    } else {
-      console.log("less than 100");
-      this.setState({
-        cHeight: this.values.display.height
-      });
-    }
+    document.getElementById("preview").innerHTML = "";
+    document.getElementById("preview").appendChild(canvas);
+  };
 
-    this.setState({ cX: this.values.display.x, cY: this.values.display.y });
-
-    console.log(
-      "values here",
-      this.values.display.width,
-      this.values.display.height
-    );
+  onComplete = crop => {
+    //maxWidth and maxHeight here are relative to the display image which is made to fit //"image-wrapper" dimensions and the visual need not be 800*100
+    this.setState({
+      maxWidth: 800 * 100 / this.props.imgWidth,
+      maxHeight: 100 * 100 / this.props.imgHeight
+    });
+    const completedCanvas = document.getElementById("preview").innerHTML;
+    this.props.updateCroppedImg(completedCanvas);
   };
 
   render() {
-    console.log(this.state.cWidth, this.state.cHeight);
     return (
       <div>
-        <div style={{ height: "1000px" }}>
-          <div className="image-wrapper">
-            <Cropper
-              src={this.props.uploadedImage}
-              width={this.state.cWidth}
-              height={this.state.cHeight}
-              originX={this.state.cX}
-              originY={this.state.cY}
-              fixedRatio={true}
-              ref={ref => {
-                this.cropper = ref;
-              }}
-              onChange={this.onChange}
-            />
-          </div>
+        <div className="image-wrapper">
+          <ReactCrop
+            src={URL.createObjectURL(this.props.uploadedImage)}
+            crop={this.state.crop}
+            onChange={this.onChange}
+            onImageLoaded={this.handleImageLoaded}
+            onComplete={this.onComplete}
+            maxWidth={this.state.maxWidth}
+            maxHeight={this.state.maxHeight}
+          />
         </div>
-        <div>
-          Step 2.
-          <Button
-            color="primary"
-            style={{ marginLeft: "12px" }}
-            onClick={this.handleClick}
-          >
-            Crop
-          </Button>
-        </div>
+        <div id="preview" />
       </div>
     );
   }

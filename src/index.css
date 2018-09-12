@@ -7,14 +7,5 @@ body {
 
 .image-wrapper {
   max-width: 1000px;
-  max-height: 800px;
-  padding-top: 24px;
-  padding-bottom: 24px;
-}
-
-.crop-wrapper {
-  max-width: 1000px;
-  max-height: 800px;
-  padding-top: 24px;
-  padding-bottom: 24px;
+  max-height: 1000px;
 }

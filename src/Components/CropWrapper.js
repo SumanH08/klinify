@@ -1,7 +1,6 @@
 import React from "react";
 import UploadImage from "./UploadImage.js";
 import CropImage from "./CropImage.js";
-import DisplayCroppedImg from "./DisplayCroppedImg.js";
 import SaveImage from "./SaveImage.js";
 import PrintPreview from "./PrintPreview.js";
 import { Container } from "reactstrap";
@@ -12,21 +11,23 @@ class CropWrapper extends React.Component {
     this.state = {
       uploadedImage: "",
       isUploaded: false,
-      croppedImgUrl: "",
-      isClicked: false,
+      croppedImg: "",
       isSaveClicked: false,
-      ImgForPreview: ""
+      ImgForPreview: "",
+      imgWidth: 0,
+      imgHeight: 0
     };
   }
 
-  fileOnUpload = event => {
+  fileOnUpload = (event, imgWidth, imgHeight) => {
     if (event.target.files[0].size / 1024 >= 1000) {
       alert("Please upload a smaller file");
       return;
     }
+    this.setState({ imgWidth: imgWidth, imgHeight: imgHeight });
     this.setState(
       {
-        uploadedImage: URL.createObjectURL(event.target.files[0])
+        uploadedImage: event.target.files[0]
       },
       function() {
         this.setState({ isUploaded: true });
@@ -34,30 +35,19 @@ class CropWrapper extends React.Component {
     );
   };
 
-  handleClick = cropFunc => {
+  updateCroppedImg = newCanvas => {
     this.setState({ isClicked: true });
-    this.setState({ croppedImgUrl: cropFunc });
+    this.setState({ croppedImg: newCanvas });
   };
 
   saveImageOnClick = () => {
     this.setState({ isSaveClicked: true });
-    console.log("Saving image now");
-    // this.setState({ croppedImgUrl: cropFunc });
-    this.sendCroppedImgToAPI(this.state.croppedImgUrl);
+    this.sendCroppedImgToAPI(this.state.croppedImg);
   };
 
-  clearInput = () => {
-    this.setState({
-      isUploaded: false,
-      isClicked: false,
-      isSaveClicked: false
-    });
-  };
-
-  sendCroppedImgToAPI = croppedImgUrl => {
-    this.saveImage(croppedImgUrl)
+  sendCroppedImgToAPI = croppedImg => {
+    this.saveImage(croppedImg)
       .then(res => {
-        console.log("preview image here", res);
         this.setState({ ImgForPreview: res });
       })
       .catch(err => {
@@ -65,8 +55,15 @@ class CropWrapper extends React.Component {
       });
   };
 
-  saveImage = croppedImgUrl => {
+  saveImage = croppedImg => {
     return Promise.resolve("http://lorempixel.com/800/100/cats/");
+  };
+
+  clearInput = () => {
+    this.setState({
+      isUploaded: false,
+      isSaveClicked: false
+    });
   };
 
   render() {
@@ -77,13 +74,9 @@ class CropWrapper extends React.Component {
           <CropImage
             uploadedImage={this.state.uploadedImage}
             onChange={this.onChange}
-            handleClick={this.handleClick}
-            isClicked={this.state.isClicked}
-            croppedImgUrl={this.state.croppedImgUrl}
-          />
-          <DisplayCroppedImg
-            isClicked={this.state.isClicked}
-            croppedImgUrl={this.state.croppedImgUrl}
+            updateCroppedImg={this.updateCroppedImg}
+            imgWidth={this.state.imgWidth}
+            imgHeight={this.state.imgHeight}
           />
         </div>
       );

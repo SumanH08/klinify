@@ -12,11 +12,3 @@ class SaveImage extends React.Component {
 }
 
 export default SaveImage;
-
-// <a href={`/print?img=${this.props.ImgForPreview}`} target="_blank">
-//   Save image
-// </a>
-
-// openPreview = () => {
-//   this.props.openPreview();
-// };
